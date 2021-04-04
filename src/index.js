@@ -24,8 +24,8 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 //Middlewares
-
-
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 app.use(morgan('dev'));
 
 //Variables Globales

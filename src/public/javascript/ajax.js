@@ -13,7 +13,7 @@ $("#region").change(function () {
           $("#comunas").empty();
           for (var i = 0; i < len; i++) {
             var value1 = data[i]['Nombre'];
-            var value2 = data[i]['ID_Comuna'];
+            var value2 = data[i]['Id_Comuna'];
             $("#comunas").append("<option value='" + value2 + "' >" + value1 + "</option>");
   
           }

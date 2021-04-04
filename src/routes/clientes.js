@@ -17,9 +17,15 @@ router.get('/regiones/:id', async (req,res) =>{
 
 
 router.post('/agregarCliente', async (req,res) => {
-    const {RUT,NOMBRE,APELLIDO,CORREO,DIRECCION,PASS,ROL,COMUNA} = req.body;
-    await pool.query('call AGREGAR_USUARIO(?,?,?,?,?,?,?,?,?)',[RUT,NOMBRE,APELLIDO,CORREO,DIRECCION,ROL,RUTADM,COMUNA]);
-    res.redirect('/index');
+   try {
+    const {RUT,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO} = req.body;
+    console.log(req.body);
+    await pool.query('call AGREGAR_CLIENTE(?,?,?,?,?,?,?,?,?,?)',[RUT,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO]);
+    res.redirect('/');
+       
+   } catch (error) {
+       console.log(error);
+   }
 });
 
 
