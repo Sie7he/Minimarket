@@ -34,6 +34,10 @@
                        <div class="form-group">
                             <select class="form-control" id="region" name="REGION">
                              <option value="0">Seleccione su región...</option>
+                             {{#each regiones}}
+                                <option value={{Id_Region}}>{{Nombre}}</option>
+                             {{/each}}
+
                             </select>
                         </div>
                         <div class="form-group">
@@ -43,13 +47,13 @@
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="TIPO" id="flexRadioDefault1"
-                                value="Persona" checked>
+                                value="1" checked>
                             <label class="form-check-label" for="flexRadioDefault1">
                                 Persona
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="TIPO" value="Empresa"
+                            <input class="form-check-input" type="radio" name="TIPO" value="2"
                                 id="flexRadioDefault2">
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Empresa
