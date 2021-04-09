@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-04-2021 a las 03:30:28
+-- Tiempo de generación: 09-04-2021 a las 04:30:43
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -26,6 +26,31 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ACTUALIZAR_CLIENTE` (`_rut` VARCHAR(12), `_nombre` VARCHAR(30), `paterno` VARCHAR(20), `materno` VARCHAR(20), `tel` VARCHAR(20), `_correo` VARCHAR(20), `sexo` TINYINT, `tipo` TINYINT, `_calle` VARCHAR(45), `num` INT, `comuna` INT)  BEGIN
+
+UPDATE registro_cliente
+
+	SET Nombre = _nombre,
+    	Apellido_Paterno = paterno,
+        Apellido_Materno = materno,
+        Telefono = tel,
+        Correo = _correo,
+        Id_Sexo = sexo,
+        Id_Tipo_Cliente = tipo
+    WHERE Rut = _rut;
+    
+    
+UPDATE direccion
+
+	SET Calle = _calle,
+    	Numero = num,
+        Id_Comuna = comuna
+        
+
+	WHERE Rut_Cliente = _rut;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AGREGAR_CLIENTE` (IN `rut` VARCHAR(12), IN `nombre` VARCHAR(30), IN `paterno` VARCHAR(20), IN `materno` VARCHAR(20), IN `telefono` VARCHAR(20), IN `correo` VARCHAR(45), IN `calle` VARCHAR(45), IN `numero` INT, IN `idComuna` INT, IN `tipo` TINYINT, IN `sexo` TINYINT)  BEGIN
 
 INSERT INTO registro_cliente (Rut,Nombre,Apellido_Paterno,Apellido_Materno,Telefono, Correo, Estado,Id_Tipo_Cliente,Id_Sexo) values (rut, nombre, paterno, materno, telefono,correo,1,tipo,sexo);
@@ -496,7 +521,7 @@ INSERT INTO `region` (`Id_Region`, `Nombre`) VALUES
 
 CREATE TABLE `registro_cliente` (
   `Rut` varchar(12) NOT NULL,
-  `Id_Tipo_Cliente` tinyint(11) NOT NULL,
+  `Id_Tipo_Cliente` tinyint(1) NOT NULL,
   `Nombre` varchar(30) NOT NULL,
   `Apellido_Paterno` varchar(20) NOT NULL,
   `Apellido_Materno` varchar(20) NOT NULL,
@@ -512,7 +537,7 @@ CREATE TABLE `registro_cliente` (
 
 INSERT INTO `registro_cliente` (`Rut`, `Id_Tipo_Cliente`, `Nombre`, `Apellido_Paterno`, `Apellido_Materno`, `Telefono`, `Correo`, `Estado`, `Id_Sexo`) VALUES
 ('10287917-1', 1, 'Juan', 'Antonio', 'Higuaino', '7845457', 'jala23@gmail.com', 1, 1),
-('13282762-1', 1, 'Juana', 'Antonia', 'Seguel', '7845457', 'juanita@gmail.com', 1, 2);
+('13282762-1', 1, 'Juana', 'Antonia', 'Salas', '7845457', 'juanita@gmail.com', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -621,7 +646,7 @@ ALTER TABLE `comunas`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas

@@ -45,7 +45,7 @@ router.post('/editarCliente/:rut', async (req,res) =>{
         const {rut} = req.params;  
         console.log(req.body);
         console.log(rut);
-        await pool.query('call ACTUALIZAR_CLIENTE(?,?,?,?,?,?,?,?,?,?,?)',[rut,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO,SEXO]);
+        await pool.query('call ACTUALIZAR_CLIENTE(?,?,?,?,?,?,?,?,?,?,?)',[rut,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,SEXO,TIPO,CALLE,NUMERO,COMUNA]);
         res.redirect('/');
         
     } catch (e) {
