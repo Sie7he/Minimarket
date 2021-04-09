@@ -23,11 +23,7 @@
     <th>A. Materno</th>
     <th>Teléfono</th>
     <th>Correo</th>
-    <th>Calle</th>
-    <th>Numero</th>
-    <th>Comuna</th>
-    <th>Region</th>
-    <th>Tipo</th>
+    <th colspan="2"></th>
       </thead>  
     
 
@@ -39,15 +35,10 @@
             <td>  {{Apellido_Materno}}</td>
             <td>  {{Telefono}}</td>
             <td>  {{Correo}}</td>
-            <td>  {{Calle}}</td>
-            <td>  {{Numero}}</td>
-            <td>  {{Comuna}}</td>
-            <td>  {{Region}}</td>
-            <td>  {{Tipo}}</td>
            
 
-            <td>  <a href='editarUsuario/{{rut}}' class="btn btn-info">Editar</a></td>
-            <td>  <a href='eliminarUsuario/{{rut}}' class="btn btn-danger">Eliminar</a></td>
+            <td>  <a href='clientes/editarCliente/{{Rut}}' class="btn btn-info">Editar</a></td>
+            <td>  <a href='clientes/eliminarCliente/{{Rut}}' class="btn btn-danger">Eliminar</a></td>
 
         </tr>
     {{/each}}

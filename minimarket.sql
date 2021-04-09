@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-04-2021 a las 20:32:44
+-- Tiempo de generación: 09-04-2021 a las 03:30:28
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -26,10 +26,20 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AGREGAR_CLIENTE` (IN `rut` VARCHAR(12), IN `nombre` VARCHAR(30), IN `paterno` VARCHAR(20), IN `materno` VARCHAR(20), IN `telefono` INT, IN `correo` VARCHAR(45), IN `calle` VARCHAR(45), IN `numero` INT, IN `idComuna` INT, IN `tipo` TINYINT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AGREGAR_CLIENTE` (IN `rut` VARCHAR(12), IN `nombre` VARCHAR(30), IN `paterno` VARCHAR(20), IN `materno` VARCHAR(20), IN `telefono` VARCHAR(20), IN `correo` VARCHAR(45), IN `calle` VARCHAR(45), IN `numero` INT, IN `idComuna` INT, IN `tipo` TINYINT, IN `sexo` TINYINT)  BEGIN
 
-INSERT INTO registro_cliente (Rut,Nombre,Apellido_Paterno,Apellido_Materno,Telefono, Correo, Estado,Id_Tipo_Cliente) values (rut, nombre, paterno, materno, telefono,correo,1,tipo);
+INSERT INTO registro_cliente (Rut,Nombre,Apellido_Paterno,Apellido_Materno,Telefono, Correo, Estado,Id_Tipo_Cliente,Id_Sexo) values (rut, nombre, paterno, materno, telefono,correo,1,tipo,sexo);
 INSERT INTO direccion (Rut_Cliente, Calle, Numero, Id_Comuna) values (rut, calle, numero, idComuna);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_CLIENTE` (`rut` VARCHAR(12))  BEGIN
+
+UPDATE registro_cliente
+
+ SET ESTADO = 0
+ 
+ WHERE Rut = rut;
 
 END$$
 
@@ -51,9 +61,12 @@ CREATE TABLE `clientes` (
 ,`Calle` varchar(45)
 ,`Numero` int(11)
 ,`Comuna` varchar(45)
+,`Id_Comuna` int(10)
+,`Id_Region` int(11)
 ,`Region` varchar(45)
 ,`Tipo` varchar(10)
 ,`Estado` tinyint(4)
+,`Sexo` varchar(10)
 );
 
 -- --------------------------------------------------------
@@ -439,8 +452,8 @@ CREATE TABLE `direccion` (
 --
 
 INSERT INTO `direccion` (`Id_Direccion`, `Id_Comuna`, `Calle`, `Numero`, `Rut_Cliente`) VALUES
-(7, 127, 'Las Rutas', 44, '19698975-7'),
-(10, 295, 'La calle', 45, '19778067-3');
+(12, 79, 'Por ahi', 45, '10287917-1'),
+(13, 295, 'Las Acasias ', 27, '13282762-1');
 
 -- --------------------------------------------------------
 
@@ -489,17 +502,37 @@ CREATE TABLE `registro_cliente` (
   `Apellido_Materno` varchar(20) NOT NULL,
   `Telefono` varchar(20) NOT NULL,
   `Correo` varchar(45) NOT NULL,
-  `Estado` tinyint(4) NOT NULL DEFAULT 1
+  `Estado` tinyint(4) NOT NULL DEFAULT 1,
+  `Id_Sexo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `registro_cliente`
 --
 
-INSERT INTO `registro_cliente` (`Rut`, `Id_Tipo_Cliente`, `Nombre`, `Apellido_Paterno`, `Apellido_Materno`, `Telefono`, `Correo`, `Estado`) VALUES
-('19698975-7', 1, 'Juan', 'Bodoque', 'Vodoque', '45457515', 'juancarlosbodoque@gmail.com', 1),
-('19778067-3', 1, 'Patana', 'Tufillo', 'Triviño', '456456456', 'patana31@gmail.com', 1),
-('21509326-3', 1, 'Patana', 'Tufillo', 'Triviño', '2147483647', 'patana31@hotmail.com', 1);
+INSERT INTO `registro_cliente` (`Rut`, `Id_Tipo_Cliente`, `Nombre`, `Apellido_Paterno`, `Apellido_Materno`, `Telefono`, `Correo`, `Estado`, `Id_Sexo`) VALUES
+('10287917-1', 1, 'Juan', 'Antonio', 'Higuaino', '7845457', 'jala23@gmail.com', 1, 1),
+('13282762-1', 1, 'Juana', 'Antonia', 'Seguel', '7845457', 'juanita@gmail.com', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sexo`
+--
+
+CREATE TABLE `sexo` (
+  `Id_Sexo` tinyint(1) NOT NULL,
+  `Sex` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `sexo`
+--
+
+INSERT INTO `sexo` (`Id_Sexo`, `Sex`) VALUES
+(1, 'Masculino'),
+(2, 'Femenino'),
+(3, 'Otro');
 
 -- --------------------------------------------------------
 
@@ -527,7 +560,7 @@ INSERT INTO `tipo_cliente` (`Id_Tipo_Cliente`, `Tipo`) VALUES
 --
 DROP TABLE IF EXISTS `clientes`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `clientes`  AS  select `registro_cliente`.`Rut` AS `Rut`,`registro_cliente`.`Nombre` AS `Nombre`,`registro_cliente`.`Apellido_Paterno` AS `Apellido_Paterno`,`registro_cliente`.`Apellido_Materno` AS `Apellido_Materno`,`registro_cliente`.`Telefono` AS `Telefono`,`registro_cliente`.`Correo` AS `Correo`,`direccion`.`Calle` AS `Calle`,`direccion`.`Numero` AS `Numero`,`comunas`.`Nombre` AS `Comuna`,`region`.`Nombre` AS `Region`,`tipo_cliente`.`Tipo` AS `Tipo`,`registro_cliente`.`Estado` AS `Estado` from ((((`registro_cliente` join `tipo_cliente` on(`registro_cliente`.`Id_Tipo_Cliente` = `tipo_cliente`.`Id_Tipo_Cliente`)) join `direccion` on(`registro_cliente`.`Rut` = `direccion`.`Rut_Cliente`)) join `comunas` on(`direccion`.`Id_Comuna` = `comunas`.`Id_Comuna`)) join `region` on(`comunas`.`Id_Region` = `region`.`Id_Region`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `clientes`  AS  select `registro_cliente`.`Rut` AS `Rut`,`registro_cliente`.`Nombre` AS `Nombre`,`registro_cliente`.`Apellido_Paterno` AS `Apellido_Paterno`,`registro_cliente`.`Apellido_Materno` AS `Apellido_Materno`,`registro_cliente`.`Telefono` AS `Telefono`,`registro_cliente`.`Correo` AS `Correo`,`direccion`.`Calle` AS `Calle`,`direccion`.`Numero` AS `Numero`,`comunas`.`Nombre` AS `Comuna`,`comunas`.`Id_Comuna` AS `Id_Comuna`,`region`.`Id_Region` AS `Id_Region`,`region`.`Nombre` AS `Region`,`tipo_cliente`.`Tipo` AS `Tipo`,`registro_cliente`.`Estado` AS `Estado`,`sexo`.`Sex` AS `Sexo` from (((((`registro_cliente` join `tipo_cliente` on(`registro_cliente`.`Id_Tipo_Cliente` = `tipo_cliente`.`Id_Tipo_Cliente`)) join `direccion` on(`registro_cliente`.`Rut` = `direccion`.`Rut_Cliente`)) join `comunas` on(`direccion`.`Id_Comuna` = `comunas`.`Id_Comuna`)) join `region` on(`comunas`.`Id_Region` = `region`.`Id_Region`)) join `sexo` on(`sexo`.`Id_Sexo` = `registro_cliente`.`Id_Sexo`)) ;
 
 --
 -- Índices para tablas volcadas
@@ -559,7 +592,14 @@ ALTER TABLE `region`
 --
 ALTER TABLE `registro_cliente`
   ADD PRIMARY KEY (`Rut`),
-  ADD KEY `Id_Tipo_Cliente` (`Id_Tipo_Cliente`);
+  ADD KEY `Id_Tipo_Cliente` (`Id_Tipo_Cliente`),
+  ADD KEY `Id_Sexo` (`Id_Sexo`);
+
+--
+-- Indices de la tabla `sexo`
+--
+ALTER TABLE `sexo`
+  ADD PRIMARY KEY (`Id_Sexo`);
 
 --
 -- Indices de la tabla `tipo_cliente`
@@ -581,7 +621,7 @@ ALTER TABLE `comunas`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
@@ -604,7 +644,8 @@ ALTER TABLE `direccion`
 -- Filtros para la tabla `registro_cliente`
 --
 ALTER TABLE `registro_cliente`
-  ADD CONSTRAINT `registro_cliente_ibfk_1` FOREIGN KEY (`Id_Tipo_Cliente`) REFERENCES `tipo_cliente` (`Id_Tipo_Cliente`);
+  ADD CONSTRAINT `registro_cliente_ibfk_1` FOREIGN KEY (`Id_Tipo_Cliente`) REFERENCES `tipo_cliente` (`Id_Tipo_Cliente`),
+  ADD CONSTRAINT `registro_cliente_ibfk_2` FOREIGN KEY (`Id_Sexo`) REFERENCES `sexo` (`Id_Sexo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -7,8 +7,6 @@ const pool = require('../database');
 router.get('/', async (req,res) =>{
 
     const clientes = await pool.query("Select * from clientes where estado = 1");
-
-    console.log(clientes)
     res.render('index', {clientes});
  });
 
