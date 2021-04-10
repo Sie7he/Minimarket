@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-04-2021 a las 04:30:43
+-- Tiempo de generación: 10-04-2021 a las 03:13:32
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -53,9 +53,12 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AGREGAR_CLIENTE` (IN `rut` VARCHAR(12), IN `nombre` VARCHAR(30), IN `paterno` VARCHAR(20), IN `materno` VARCHAR(20), IN `telefono` VARCHAR(20), IN `correo` VARCHAR(45), IN `calle` VARCHAR(45), IN `numero` INT, IN `idComuna` INT, IN `tipo` TINYINT, IN `sexo` TINYINT)  BEGIN
 
+IF (BUSCAR_CLIENTE(rut)=1) THEN
+SIGNAL SQLSTATE '40004'SET MESSAGE_TEXT = 'ESTE USUARIO YA EXISTE';
+ ELSE
 INSERT INTO registro_cliente (Rut,Nombre,Apellido_Paterno,Apellido_Materno,Telefono, Correo, Estado,Id_Tipo_Cliente,Id_Sexo) values (rut, nombre, paterno, materno, telefono,correo,1,tipo,sexo);
 INSERT INTO direccion (Rut_Cliente, Calle, Numero, Id_Comuna) values (rut, calle, numero, idComuna);
-
+END IF ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_CLIENTE` (`rut` VARCHAR(12))  BEGIN
@@ -65,6 +68,20 @@ UPDATE registro_cliente
  SET ESTADO = 0
  
  WHERE Rut = rut;
+
+END$$
+
+--
+-- Funciones
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `BUSCAR_CLIENTE` (`rut_c` VARCHAR(12)) RETURNS INT(11) BEGIN
+
+DECLARE CONTADOR INT DEFAULT 0;
+
+SELECT COUNT(*) INTO CONTADOR 
+FROM registro_cliente WHERE Rut = rut_c;
+
+RETURN CONTADOR;
 
 END$$
 
@@ -90,8 +107,10 @@ CREATE TABLE `clientes` (
 ,`Id_Region` int(11)
 ,`Region` varchar(45)
 ,`Tipo` varchar(10)
+,`Id_Tipo` tinyint(4)
 ,`Estado` tinyint(4)
 ,`Sexo` varchar(10)
+,`Id_Sexo` tinyint(1)
 );
 
 -- --------------------------------------------------------
@@ -537,7 +556,7 @@ CREATE TABLE `registro_cliente` (
 
 INSERT INTO `registro_cliente` (`Rut`, `Id_Tipo_Cliente`, `Nombre`, `Apellido_Paterno`, `Apellido_Materno`, `Telefono`, `Correo`, `Estado`, `Id_Sexo`) VALUES
 ('10287917-1', 1, 'Juan', 'Antonio', 'Higuaino', '7845457', 'jala23@gmail.com', 1, 1),
-('13282762-1', 1, 'Juana', 'Antonia', 'Salas', '7845457', 'juanita@gmail.com', 1, 1);
+('13282762-1', 1, 'Juana', 'Antonia', '3213', '7845457', 'juanita@gmail.com', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -585,7 +604,7 @@ INSERT INTO `tipo_cliente` (`Id_Tipo_Cliente`, `Tipo`) VALUES
 --
 DROP TABLE IF EXISTS `clientes`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `clientes`  AS  select `registro_cliente`.`Rut` AS `Rut`,`registro_cliente`.`Nombre` AS `Nombre`,`registro_cliente`.`Apellido_Paterno` AS `Apellido_Paterno`,`registro_cliente`.`Apellido_Materno` AS `Apellido_Materno`,`registro_cliente`.`Telefono` AS `Telefono`,`registro_cliente`.`Correo` AS `Correo`,`direccion`.`Calle` AS `Calle`,`direccion`.`Numero` AS `Numero`,`comunas`.`Nombre` AS `Comuna`,`comunas`.`Id_Comuna` AS `Id_Comuna`,`region`.`Id_Region` AS `Id_Region`,`region`.`Nombre` AS `Region`,`tipo_cliente`.`Tipo` AS `Tipo`,`registro_cliente`.`Estado` AS `Estado`,`sexo`.`Sex` AS `Sexo` from (((((`registro_cliente` join `tipo_cliente` on(`registro_cliente`.`Id_Tipo_Cliente` = `tipo_cliente`.`Id_Tipo_Cliente`)) join `direccion` on(`registro_cliente`.`Rut` = `direccion`.`Rut_Cliente`)) join `comunas` on(`direccion`.`Id_Comuna` = `comunas`.`Id_Comuna`)) join `region` on(`comunas`.`Id_Region` = `region`.`Id_Region`)) join `sexo` on(`sexo`.`Id_Sexo` = `registro_cliente`.`Id_Sexo`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `clientes`  AS  select `registro_cliente`.`Rut` AS `Rut`,`registro_cliente`.`Nombre` AS `Nombre`,`registro_cliente`.`Apellido_Paterno` AS `Apellido_Paterno`,`registro_cliente`.`Apellido_Materno` AS `Apellido_Materno`,`registro_cliente`.`Telefono` AS `Telefono`,`registro_cliente`.`Correo` AS `Correo`,`direccion`.`Calle` AS `Calle`,`direccion`.`Numero` AS `Numero`,`comunas`.`Nombre` AS `Comuna`,`comunas`.`Id_Comuna` AS `Id_Comuna`,`region`.`Id_Region` AS `Id_Region`,`region`.`Nombre` AS `Region`,`tipo_cliente`.`Tipo` AS `Tipo`,`tipo_cliente`.`Id_Tipo_Cliente` AS `Id_Tipo`,`registro_cliente`.`Estado` AS `Estado`,`sexo`.`Sex` AS `Sexo`,`sexo`.`Id_Sexo` AS `Id_Sexo` from (((((`registro_cliente` join `tipo_cliente` on(`registro_cliente`.`Id_Tipo_Cliente` = `tipo_cliente`.`Id_Tipo_Cliente`)) join `direccion` on(`registro_cliente`.`Rut` = `direccion`.`Rut_Cliente`)) join `comunas` on(`direccion`.`Id_Comuna` = `comunas`.`Id_Comuna`)) join `region` on(`comunas`.`Id_Region` = `region`.`Id_Region`)) join `sexo` on(`sexo`.`Id_Sexo` = `registro_cliente`.`Id_Sexo`)) ;
 
 --
 -- Índices para tablas volcadas
@@ -646,7 +665,7 @@ ALTER TABLE `comunas`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Restricciones para tablas volcadas

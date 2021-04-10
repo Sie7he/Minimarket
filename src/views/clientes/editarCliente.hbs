@@ -4,7 +4,7 @@
         <div class="col-md-4 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" autocomplete="off" >
+                    <form method="POST" autocomplete="off"  >
                      
                         <div class="form-group">
                             <input type="text" class="form-control" id="RUT" name="RUT" placeholder="RUT" disabled value="{{cl.Rut}}"
@@ -19,34 +19,22 @@
                         <div class="form-group">
                             <input type="text" class="form-control" name="APELLIDOM" placeholder="Apellido Materno" value="{{cl.Apellido_Materno}}">
                         </div>
-                         <div class="form-group">
-                             <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SEXO" id="m"
-                                value="1" checked>
-                            <label class="form-check-label" for="m">
-                                Masculino
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SEXO" value="2"
-                                id="f">
-                            <label class="form-check-label" for="f">
-                                Femenino
-                            </label>
-                            </div>
-                               <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SEXO" id="O"
-                                value="3">
-                            <label class="form-check-label" for="O">
-                               Otro
-                            </label>
-                        </div>
-                        </div></br>
+
                         <div class="form-group">
-                            <input type="text" class="form-control" name="TELEFONO" placeholder="Teléfono ej: 9541234547" value={{cl.Telefono}}>
+                            <select class="form-control" id="sexo" name="SEXO">
+                             <option value="{{cl.Id_Sexo}}">{{cl.Sexo}}</option>
+                             <option value="1">Masculino</option>
+                             <option value="2">Femenino</option>
+                             <option value="3">Otro</option>
+
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="TELEFONO" placeholder="Teléfono ej: 9541234547" value="{{cl.Telefono}}">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="CORREO" placeholder="Correo@ejemplo.com" value={{cl.Correo}}>
+                            <input type="text" class="form-control" name="CORREO" placeholder="Correo@ejemplo.com" value="{{cl.Correo}}">
                         </div>
                          
                         <div class="form-group">
@@ -59,7 +47,7 @@
                             <select class="form-control" id="region" name="REGION">
                              <option value="{{cl.Id_region}}">{{cl.Region}}</option>
                              {{#each regiones}}
-                                <option value={{Id_Region}}>{{Nombre}}</option>
+                                <option value="{{Id_Region}}">{{Nombre}}</option>
                              {{/each}}
 
                             </select>
@@ -69,20 +57,15 @@
                              <option value="{{cl.Id_Comuna}}">{{cl.Comuna}}</option>
                             </select>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="TIPO" id="flexRadioDefault1"
-                                value="1" checked>
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Persona
-                            </label>
+                        
+                        <div class="form-group">
+                            <select class="form-control" id="tipo" name="TIPO">
+                             <option value="{{cl.Id_Tipo}}">{{cl.Tipo}}</option>
+                             <option value="1">Persona</option>
+                             <option value="2">Empresa</option>
+                          
+                            </select>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="TIPO" value="2"
-                                id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Empresa
-                            </label>
-                        </div></br>
                       
                         <div class="form-group">
                             <button class="btn btn-success btn-block">
