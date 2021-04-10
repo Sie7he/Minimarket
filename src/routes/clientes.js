@@ -23,6 +23,7 @@ router.post('/agregarCliente', async (req,res) => {
     res.redirect('/');
        
    } catch (e) {
+
        console.log(e);
    }
 });
