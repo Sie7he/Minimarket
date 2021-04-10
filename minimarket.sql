@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-04-2021 a las 03:13:32
+-- Tiempo de generación: 10-04-2021 a las 03:42:13
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -61,13 +61,13 @@ INSERT INTO direccion (Rut_Cliente, Calle, Numero, Id_Comuna) values (rut, calle
 END IF ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_CLIENTE` (`rut` VARCHAR(12))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_CLIENTE` (IN `rut_c` VARCHAR(12))  BEGIN
 
 UPDATE registro_cliente
 
  SET ESTADO = 0
  
- WHERE Rut = rut;
+ WHERE Rut = rut_c;
 
 END$$
 
@@ -497,7 +497,8 @@ CREATE TABLE `direccion` (
 
 INSERT INTO `direccion` (`Id_Direccion`, `Id_Comuna`, `Calle`, `Numero`, `Rut_Cliente`) VALUES
 (12, 79, 'Por ahi', 45, '10287917-1'),
-(13, 295, 'Las Acasias ', 27, '13282762-1');
+(13, 295, 'Las Acasias ', 27, '13282762-1'),
+(22, 80, '18 de Septiembre', 18, '16091033-K');
 
 -- --------------------------------------------------------
 
@@ -556,7 +557,8 @@ CREATE TABLE `registro_cliente` (
 
 INSERT INTO `registro_cliente` (`Rut`, `Id_Tipo_Cliente`, `Nombre`, `Apellido_Paterno`, `Apellido_Materno`, `Telefono`, `Correo`, `Estado`, `Id_Sexo`) VALUES
 ('10287917-1', 1, 'Juan', 'Antonio', 'Higuaino', '7845457', 'jala23@gmail.com', 1, 1),
-('13282762-1', 1, 'Juana', 'Antonia', '3213', '7845457', 'juanita@gmail.com', 1, 2);
+('13282762-1', 1, 'Juana', 'Antonia', '3213', '7845457', 'juanita@gmail.com', 1, 2),
+('16091033-K', 1, 'Soledad', 'Santiago', 'Hidalgo', '45124784', 'sol@gmail.com', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -665,7 +667,7 @@ ALTER TABLE `comunas`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Restricciones para tablas volcadas

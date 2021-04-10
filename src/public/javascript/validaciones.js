@@ -79,7 +79,7 @@ function validarFormulario() {
    let materno = document.getElementById('MATERNO');
    let tel = document.getElementById('TEL');
    let num = document.getElementById('NUM');
-   console.log(tel)
+   console.log(tel.length);
 
    /*Con la funcion validar se pasa por parametro cada variable y si no cumple las condiciones 
    de la funcion anterior el div_error cambiara por una frase que diga solo letras y desaparecerá en 4 segundos*/
