@@ -104,10 +104,5 @@ function validarFormulario() {
       document.getElementById("tel_error").innerHTML = "Debe insertar solo números";
       setInterval(function () { document.getElementById("tel_error").innerHTML = ""; }, 4000);
       return false;
-   } else if (validarNum(num) === false) {
-      num.focus();
-      document.getElementById("num_error").innerHTML = "Debe insertar solo números";
-      setInterval(function () { document.getElementById("num_error").innerHTML = ""; }, 4000);
-      return false;
-   }
+   } 
 };

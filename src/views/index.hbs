@@ -16,14 +16,14 @@
                         </div>
                     </form>
                     <br>
-  <thead class="thead-dark">
+  <thead>
     <th>RUT</th>
     <th>Nombre</th>
     <th>A. Paterno</th>
     <th>A. Materno</th>
     <th>Teléfono</th>
     <th>Correo</th>
-    <th colspan="2"></th>
+    <th colspan="3"></th>
       </thead>  
     
 
@@ -37,9 +37,9 @@
             <td>  {{Correo}}</td>
            
 
-            <td>  <a href='clientes/editarCliente/{{Rut}}' class="btn btn-info">Editar</a></td>
-            <td>  <a href='clientes/eliminarCliente/{{Rut}}' class="btn btn-danger">Eliminar</a></td>
-
+            <td>  <a href="#" class="view" title="Ver" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a></td>
+            <td>  <a href='clientes/editarCliente/{{Rut}}' class="edit" title="Actualizar" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a></td>
+            <td>  <a href=href='clientes/eliminarCliente/{{Rut}}'  class="delete" title="Eliminar" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a> </td>
         </tr>
     {{/each}}
     
@@ -47,4 +47,17 @@
 </tbody>
 
 </table>
+
+<div class="clearfix">
+                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                <ul class="pagination">
+                    <li class="page-item disabled"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
+                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link"><i class="fa fa-angle-double-right"></i></a></li>
+                </ul>
+            </div>
 </div>
