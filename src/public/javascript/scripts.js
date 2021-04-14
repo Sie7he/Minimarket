@@ -7,7 +7,7 @@ $('#cliente').keyup(function () {
 
 });
 
-$('.btn-danger').click(function () {
+$('.delete').click(function () {
   if (confirm("¿Desea Eliminar Al Cliente?")) {
     document.submit();
   } else {
