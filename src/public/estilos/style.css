@@ -1,5 +1,8 @@
-table.table td a.view {
+table.table td button.view {
+    background-color: transparent;
+    border: none;
     color: #03A9F4;
+    
 }
 table.table td a.edit {
     color: #FFC107;

@@ -11,10 +11,23 @@ router.get('/agregarCliente', async (req,res) =>{
 
 router.get('/regiones/:id', async (req,res) =>{
     const comunas =  await pool.query('Select * from comunas where Id_Region = ?',req.params.id);
-    console.log(comunas)
     res.json(comunas);
 });
 
+
+router.get('/detalle/:rut', async (req,res) =>{
+  try {
+      const {rut} = req.params;
+      const detalle = await pool.query("Select * from clientes where Rut = ? ",rut);
+      res.json(detalle);
+
+      
+  } catch (e) {
+      
+  }
+ 
+
+});
 
 router.post('/agregarCliente', async (req,res) => {
    try {

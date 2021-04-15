@@ -1,7 +1,7 @@
 $("#region").change(function () {
     const id = $("#region").val();
     $.ajax({
-      url: "/clientes/regiones/" + id,
+      url: "/" + id,
       type: "GET",
       success: function (data) {
   
@@ -22,3 +22,24 @@ $("#region").change(function () {
       }
     });
   });
+
+  function detalle(rut) {
+    $.ajax({
+      url: "/clientes/detalle/" + rut,
+      type: "GET",
+      success: function (data) {    
+        $('.tbDetalle').empty();
+        $.each(data, function (i, item) {
+          $('#detalleCliente').append(
+            $('<tr>'),
+            $('<td>').text(item.Sexo),
+            $('<td>').text(item.Calle +" "+ item.Numero),
+            $('<td>').text(item.Comuna),
+            $('<td>').text(item.Region),
+            $('<td>').text(item.Tipo)
+          ); 
+        }
+        );
+      }
+    })
+  };
