@@ -5,7 +5,6 @@ const path = require('path');
 const {database} = require('./keys');
 const flash = require('connect-flash');
 
-
 //inicializacion
 
 const app = express();
@@ -29,6 +28,7 @@ app.use(flash());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(morgan('dev'));
+
 
 //Variables Globales
 

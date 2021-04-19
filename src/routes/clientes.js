@@ -10,8 +10,17 @@ router.get('/agregarCliente', async (req,res) =>{
 });
 
 router.get('/regiones/:id', async (req,res) =>{
-    const comunas =  await pool.query('Select * from comunas where Id_Region = ?',req.params.id);
-    res.json(comunas);
+
+        try {
+            const {id} = req.params;
+            console.log(id);
+            const comunas =  await pool.query('Select * from comunas where Id_Region = ?',id);
+            res.json(comunas);
+            console.log(comunas);
+        } catch (error) {
+            console.log(error);
+        }
+
 });
 
 
@@ -29,11 +38,25 @@ router.get('/detalle/:rut', async (req,res) =>{
 
 });
 
+router.get('/lista', async (req,res) =>{
+    res.render('clientes/lista');
+});
+router.get('/listaClientes', async (req,res)=>{
+   try {
+       const clientes = await pool.query("Select rut,nombre, apellido_paterno as paterno, apellido_materno as materno, telefono, correo from registro_cliente");
+       res.jsonp(clientes);
+       
+   } catch (error) {
+       console.log(error);
+       
+   }
+
+});
 router.post('/agregarCliente', async (req,res) => {
    try {
     const {RUT,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO,SEXO} = req.body;
     await pool.query('call AGREGAR_CLIENTE(?,?,?,?,?,?,?,?,?,?,?)',[RUT,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO,SEXO]);
-    res.redirect('/');
+    res.redirect('/clientes/agregarCliente');
        
    } catch (e) {
 
@@ -41,6 +64,17 @@ router.post('/agregarCliente', async (req,res) => {
    }
 });
 
+/* router.get('/lista', async (req,res) =>{
+    try {
+    
+    const clientes = await pool.query('Select nombre from registro_cliente')
+    res.send(clientes)
+     
+    } catch (error) {
+        console.warn(error);
+    }
+});
+ */
 router.get('/editarCliente/:rut', async (req,res) =>{
     try {
         const {rut} = req.params;  
