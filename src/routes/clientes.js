@@ -43,7 +43,7 @@ router.get('/lista', async (req,res) =>{
 });
 router.get('/listaClientes', async (req,res)=>{
    try {
-       const clientes = await pool.query("Select rut,nombre, apellido_paterno as paterno, apellido_materno as materno, telefono, correo from registro_cliente");
+       const clientes = await pool.query("Select rut,nombre, apellido_paterno as paterno, apellido_materno as materno, telefono, correo from registro_cliente where estado = 1");
        res.jsonp(clientes);
        
    } catch (error) {
@@ -64,17 +64,7 @@ router.post('/agregarCliente', async (req,res) => {
    }
 });
 
-/* router.get('/lista', async (req,res) =>{
-    try {
-    
-    const clientes = await pool.query('Select nombre from registro_cliente')
-    res.send(clientes)
-     
-    } catch (error) {
-        console.warn(error);
-    }
-});
- */
+
 router.get('/editarCliente/:rut', async (req,res) =>{
     try {
         const {rut} = req.params;  
@@ -102,12 +92,12 @@ router.post('/editarCliente/:rut', async (req,res) =>{
 });
 
 
-router.get('/eliminarCliente/:rut', async (req,res) =>{
+router.post('/eliminarCliente/:rut', async (req,res) =>{
     try {
         const {rut} = req.params;
-        await pool.query('call ELIMINAR_CLIENTE (?)',[rut]);
-        res.redirect('/');
-        
+        const clientes = await pool.query('call ELIMINAR_CLIENTE (?)',[rut]);
+        res.json(clientes);
+        console.log(rut);
     } catch (e) {
         console.log(e)
     }

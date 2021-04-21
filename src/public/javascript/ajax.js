@@ -1,57 +1,53 @@
-2
+let url = 'http://localhost:3000/clientes/listaClientes';        
+let tablaClientes =  $('#tablaArticulos').DataTable({    
+  "ajax":{
+      "url": url,
+      "dataSrc":""
+  },
+  "language": {
 
-$('#cargar').click(function() {
+    "lengthMenu": "Mostrar _MENU_ registros",
 
-  $('#cargar').fadeOut();
-  let url = 'http://localhost:3000/clientes/listaClientes';
+    "zeroRecords": "No se encontraron resultados",
 
-   $('#tablaArticulos').DataTable({            
-      "ajax":{
-          "url": url,
-          "dataSrc":""
-      },
-      "language": {
+    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
 
-        "lengthMenu": "Mostrar _MENU_ registros",
+    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
 
-        "zeroRecords": "No se encontraron resultados",
+    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
 
-        "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "sSearch": "Buscar:",
 
-        "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "oPaginate": {
 
-        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sFirst": "Primero",
 
-        "sSearch": "Buscar:",
+        "sLast":"Último",
 
-        "oPaginate": {
+        "sNext":">>",
 
-            "sFirst": "Primero",
+        "sPrevious": "<<"
 
-            "sLast":"Último",
+     },
 
-            "sNext":">>",
+     "sProcessing":"Procesando...",
 
-            "sPrevious": "<<"
-
-         },
-
-         "sProcessing":"Procesando...",
-
-    },
-      "columns":[
-          {"data":"rut"},
-          {"data":"nombre"},
-          {"data":"paterno"},
-          {"data":"materno"},
-          {"data":"telefono"},
-          {"data":"correo"},
-          {"defaultContent":  `<td>  <a href='clientes/editarCliente/' class='edit' title='Actualizar' data-toggle='tooltip'><i class='material-icons'>&#xE254;</i></a></td>`+
-          "<td>  <a href='clientes/eliminarCliente/{{Rut}}'  class='delete' title='Eliminar' data-toggle='tooltip'><i class='material-icons'>&#xE872;</i></a> </td>"}
-      ],             
-  });
-
+},
+  "columns":[
+      {"data":"rut",},
+      {"data":"nombre"},
+      {"data":"paterno"},
+      {"data":"materno"},
+      {"data":"telefono"},
+      {"data":"correo"},
+      {"data" :"rut",  render:function(data)
+      {
+        return `<td>  <a href='/clientes/editarCliente/`+data+`' class='edit' title='Actualizar' data-toggle='tooltip'><i class='material-icons'>&#xE254;</i></a></td>`+
+               `<td>  <a href='#' onClick='eliminarCliente("`+data+`")'class='delete' title='Eliminar' data-toggle='tooltip'><i class='material-icons'>&#xE872;</i></a> </td>`
+      }}
+  ],             
 });
+
 
 $("#region").change(function () {
     const id = $("#region").val();
@@ -99,3 +95,38 @@ $("#region").change(function () {
     })
   };
 
+  function eliminarCliente(id) {
+
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Borrar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+  
+        $.ajax({
+  
+          url: "/clientes/eliminarCliente/" + id,
+          type: "POST",
+          data: {
+            id: id
+          },
+          success: () => {
+            tablaClientes.ajax.reload();      
+            Swal.fire(
+              'Eliminado!',
+              'El cliente ha sido eliminado.',
+              'success'
+            );
+          }
+        });
+      }
+    })
+  
+  
+  };
