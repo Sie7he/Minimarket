@@ -56,7 +56,7 @@ router.post('/agregarCliente', async (req,res) => {
    try {
     const {RUT,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO,SEXO} = req.body;
     await pool.query('call AGREGAR_CLIENTE(?,?,?,?,?,?,?,?,?,?,?)',[RUT,NOMBRE,APELLIDOP,APELLIDOM,TELEFONO,CORREO,CALLE,NUMERO,COMUNA,TIPO,SEXO]);
-    res.redirect('/clientes/agregarCliente');
+    res.redirect('/clientes/lista');
        
    } catch (e) {
 

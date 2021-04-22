@@ -1,0 +1,63 @@
+<div class="container p-4">
+    <h2 style="text-align: center;">Actualizar Productos</h2>
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" autocomplete="off"  >
+                     
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="id" name="id" disabled value="{{pr.idProductos}}"
+                                aria-autocomplete="none">
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-control" id="Proveedor" name="Proveedor">
+                             <option value="{{pr}}">seleccione Proveedor</option>
+                             {{#each Proveedor}}
+                                <option value={{idProveedor}}>{{nombre}}</option>
+                             {{/each}}
+
+                            </select>
+                        </div>
+                         <div class="mb-3">
+                            <select class="form-control" id="SubRubro" name="SubRubro"value="{{pr.SubRubro}}">
+                             <option value="0">seleccione categoria</option>
+                             {{#each SubRubro}}
+                                <option value={{idRubro}}>{{categoria}}</option>
+                             {{/each}}
+
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="Codigo" placeholder="Apellido Materno" value="{{pr.codigoBarra}}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="Descripcion" placeholder="Teléfono ej: 9541234547" value="{{pr.Descripcion}}">
+                        </div>
+                        <div class="mb-3">
+                            <input  class="form-control" name="Gramage" placeholder="Correo@ejemplo.com" value="{{pr.Gramage}}">
+                        </div>
+                         
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="medida" placeholder="Calle" value="{{pr.medida}}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="Precio" placeholder="Número ej: 123" value="{{pr.PrecioUnitario}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="Stock" placeholder="Número ej: 123" value="{{pr.Stock}}">
+                        </div>
+                      
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">
+                                Actualizar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
-let url = 'http://localhost:3000/clientes/listaClientes';        
-let tablaClientes =  $('#tablaArticulos').DataTable({    
+
+  let url = 'http://localhost:3000/clientes/listaClientes';        
+  let tablaClientes =  $('#tablaArticulos').DataTable({    
   "ajax":{
       "url": url,
       "dataSrc":""
@@ -48,6 +49,47 @@ let tablaClientes =  $('#tablaArticulos').DataTable({
   ],             
 });
 
+function eliminarCliente(id) {
+
+  Swal.fire({
+    title: 'Estas seguro?',
+    text: "No podrás revertir esto!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Borrar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      $.ajax({
+
+        url: "/clientes/eliminarCliente/" + id,
+        type: "POST",
+        data: {
+          id: id
+        },
+        success: () => {
+          tablaClientes.ajax.reload();      
+          Swal.fire(
+            'Eliminado!',
+            'El cliente ha sido eliminado.',
+            'success'
+          );
+        }
+      });
+    }
+  })
+
+
+};
+
+$('#SubRubro').change(function () {
+  const rubro = $('#SubRubro').val();
+  $('#CodigoBarra').val(rubro); 
+});
+
 
 $("#region").change(function () {
     const id = $("#region").val();
@@ -74,6 +116,7 @@ $("#region").change(function () {
     });
   });
 
+
   function detalle(rut) {
     $.ajax({
       url: "/clientes/detalle/" + rut,
@@ -95,38 +138,95 @@ $("#region").change(function () {
     })
   };
 
-  function eliminarCliente(id) {
 
-    Swal.fire({
-      title: 'Estas seguro?',
-      text: "No podrás revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Borrar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-  
-        $.ajax({
-  
-          url: "/clientes/eliminarCliente/" + id,
-          type: "POST",
-          data: {
-            id: id
-          },
-          success: () => {
-            tablaClientes.ajax.reload();      
-            Swal.fire(
-              'Eliminado!',
-              'El cliente ha sido eliminado.',
-              'success'
-            );
-          }
-        });
-      }
-    })
-  
-  
-  };
+
+  let url2 = 'http://localhost:3000/productos/listaProductos';        
+  let tablaProductos =  $('#tablaProductos').DataTable({    
+  "ajax":{
+      "url": url2,
+      "dataSrc":""
+  },
+  "language": {
+
+    "lengthMenu": "Mostrar _MENU_ registros",
+
+    "zeroRecords": "No se encontraron resultados",
+
+    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+
+    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+
+    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+
+    "sSearch": "Buscar:",
+
+    "oPaginate": {
+
+        "sFirst": "Primero",
+
+        "sLast":"Último",
+
+        "sNext":">>",
+
+        "sPrevious": "<<"
+
+     },
+
+     "sProcessing":"Procesando...",
+
+},
+  "columns":[
+      {"data":"idProductos",},
+      {"data":"nombre"},
+      {"data":"categoria"},
+      {"data":"codigoBarra"},
+      {"data":"Descripcion"},
+      {"data":"Gramage"},
+      {"data":"medida"},
+      {"data":"PrecioUnitario"},
+      {"data":"Stock"},
+      {"data" :"idProductos",  render:function(data)
+      {
+        return `<td>  <a href='/productos/editarProductos/`+data+`' class='edit' title='Actualizar' data-toggle='tooltip'><i class='material-icons'>&#xE254;</i></a></td>`+
+               `<td>  <a href='#' onClick='eliminarProductos("`+data+`")'class='delete' title='Eliminar' data-toggle='tooltip'><i class='material-icons'>&#xE872;</i></a> </td>`
+      }}
+      
+     
+  ],             
+});
+
+function eliminarProductos(id) {
+
+  Swal.fire({
+    title: 'Estas seguro?',
+    text: "No podrás revertir esto!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Borrar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      $.ajax({
+
+        url: "/clientes/eliminarCliente/" + id,
+        type: "POST",
+        data: {
+          id: id
+        },
+        success: () => {
+          tablaClientes.ajax.reload();      
+          Swal.fire(
+            'Eliminado!',
+            'El cliente ha sido eliminado.',
+            'success'
+          );
+        }
+      });
+    }
+  })
+
+
+};

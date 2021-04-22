@@ -45,7 +45,7 @@ next();
 //Rutas
 app.use(require('./routes'));
 app.use('/clientes',require('./routes/clientes'));
-
+app.use('/productos',require('./routes/productos'));
 
 
 
