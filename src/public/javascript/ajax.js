@@ -321,8 +321,8 @@ let tablaProveedor =  $('#tablaProveedor').DataTable({
   "columns":[
       {"data":"idProveedor"},
       {"data":"Rut",},
-      {"data":"Fk_Comuna"},
       {"data":"nombre"},
+      {"data":"Comuna"},
       {"data":"telefono"},
       {"data":"direccion"},
       {"data":"numero"},

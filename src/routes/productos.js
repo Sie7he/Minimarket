@@ -29,7 +29,7 @@ router.post('/agregarProductos', async (req,res) => {
     try {
      const {Prov,SUBRUBRO,codigo,descr,gramo,med,precio,stock,NOMBREPRODUCTO,IMAGEN} = req.body;
      await pool.query('call Agregar_producto(?,?,?,?,?,?,?,?,?,?)',[Prov,SUBRUBRO,codigo,descr,gramo,med,precio,stock,NOMBREPRODUCTO,IMAGEN]);
-     res.redirect('/productos/listaProdutos');
+     res.redirect('/productos/verProductos');
         
     } catch (e) {
  
@@ -54,11 +54,11 @@ router.post('/agregarProductos', async (req,res) => {
 });
 router.post('/editarProductos/:id', async (req,res) =>{
     try {
-        const {Nombre,Proveedor,Subrubro,Codigo,Descripcion,Gramage,medida,Precio,Stock} = req.body;
+        const {Nombre,Proveedor,Subrubro,Codigo,Descripcion,Gramage,medida,Precio,Stock,Imagen} = req.body;
         const {id} = req.params;  
         console.log(req.body);
         console.log(id);
-        await pool.query('call Actualizar_Productos(?,?,?,?,?,?,?,?,?,?)',[id,Proveedor,Subrubro,Codigo,Descripcion,Gramage,medida,Precio,Stock,Nombre]);
+        await pool.query('call Actualizar_Productos(?,?,?,?,?,?,?,?,?,?,?)',[id,Proveedor,Subrubro,Codigo,Descripcion,Gramage,medida,Precio,Stock,Nombre,Imagen]);
         res.redirect('/productos/verProductos');
         
     } catch (e) {

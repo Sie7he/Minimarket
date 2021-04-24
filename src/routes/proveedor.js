@@ -8,7 +8,7 @@ router.get('/listaProveedor', async (req, res) => {
 });
 router.get('/listaProveedorAjax', async (req, res) => {
     try {
-        const proveedor = await pool.query("Select * from proveedor where estado = 1");
+        const proveedor = await pool.query("Select * from v_proveedor where estado = 1");
         res.send(proveedor);
 
     } catch (error) {

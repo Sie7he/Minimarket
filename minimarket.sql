@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-04-2021 a las 07:48:47
+-- Tiempo de generación: 24-04-2021 a las 08:22:31
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -51,9 +51,9 @@ UPDATE direccion
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_Productos` (IN `id` INT, IN `nom` VARCHAR(45), IN `cat` VARCHAR(45), IN `cod` VARCHAR(45), IN `descu` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT, IN `nomp` VARCHAR(45))  BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_Productos` (IN `id` INT, IN `nom` VARCHAR(45), IN `cat` VARCHAR(45), IN `cod` VARCHAR(45), IN `descu` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT, IN `nomp` VARCHAR(45), IN `img` VARCHAR(250))  BEGIN 
 UPDATE productos
-SET Nombre= nomp,Proveedor= nom,SubRubro= cat,codigoBarra= cod,Descripcion= descu,Gramaje= gramo,medida= med,PrecioUnitario= precio, Stock=stock
+SET Nombre= nomp,Proveedor= nom,SubRubro= cat,codigoBarra= cod,Descripcion= descu,Gramaje= gramo,medida= med,PrecioUnitario= precio, Stock=stock, Imagen=img
 WHERE idProductos = id;
 
 END$$
@@ -75,7 +75,7 @@ INSERT INTO direccion (Rut_Cliente, Calle, Numero, Id_Comuna) values (rut, calle
 END IF ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Agregar_producto` (IN `prov` INT, IN `sub` INT, IN `codigo` VARCHAR(45), IN `descr` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT, IN `nomb` VARCHAR(45), IN `img` VARCHAR(50))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Agregar_producto` (IN `prov` INT, IN `sub` INT, IN `codigo` VARCHAR(45), IN `descr` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT, IN `nomb` VARCHAR(45), IN `img` VARCHAR(250))  BEGIN
 INSERT INTO productos(Nombre,Proveedor,SubRubro,codigoBarra,Descripcion,Gramaje,Medida,PrecioUnitario,Stock,Imagen) VALUES (nomb,prov, sub, codigo, descr, gramo,med,precio,stock,img);
 
 END$$
@@ -591,7 +591,7 @@ CREATE TABLE `productos` (
   `PrecioUnitario` int(10) UNSIGNED NOT NULL,
   `Stock` int(10) UNSIGNED NOT NULL,
   `Estado` tinyint(4) NOT NULL DEFAULT 1,
-  `Imagen` varchar(100) NOT NULL
+  `Imagen` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -600,7 +600,8 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`idProductos`, `Nombre`, `Proveedor`, `SubRubro`, `CodigoBarra`, `Descripcion`, `Gramaje`, `Medida`, `PrecioUnitario`, `Stock`, `Estado`, `Imagen`) VALUES
 (101, 'Escoba', 123, 64, '1234567891013', 'Sirve para volar a lo Harry Potter', 1, 'un', 30000, 20, 1, 'https://i.pinimg.com/originals/50/cb/db/50cbdbf6776e0efe872b88dfb677c99a.png'),
-(103, 'Pala', 123, 64, '12312312323', 'Pala para la escoba', 1, 'un', 2000, 20, 1, 'https://media.easy.com.ar/is/image/EasyArg/1181848');
+(103, 'Pala', 123, 64, '12312312323', 'Pala para la escoba', 1, 'un', 2000, 20, 1, 'https://media.easy.com.ar/is/image/EasyArg/1181848'),
+(104, 'Colgador', 125, 124, '123131323', 'Para sacar a pasear ', 1, 'un', 20000, 1, 1, 'https://st.depositphotos.com/1001877/2003/i/600/depositphotos_20030741-stock-photo-clothes-hanger-on-white-isolated.jpg');
 
 -- --------------------------------------------------------
 
@@ -1000,7 +1001,7 @@ CREATE TABLE `vista_productos` (
 ,`PrecioUnitario` int(10) unsigned
 ,`Stock` int(10) unsigned
 ,`Estado` tinyint(4)
-,`Imagen` varchar(100)
+,`Imagen` varchar(250)
 ,`idProveedor` int(10) unsigned
 ,`pNombre` varchar(45)
 ,`rut` varchar(14)
@@ -1195,7 +1196,7 @@ ALTER TABLE `direccion`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `idProductos` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `idProductos` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
