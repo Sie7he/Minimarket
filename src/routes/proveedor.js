@@ -33,7 +33,7 @@ router.post('/agregarProveedor', async (req, res) => {
     try {
         const { RUT, COMUNA, NOMBRE, TELEFONO, DIRECCION, NUMERO, CORREO } = req.body;
         await pool.query('call Agregar_Proveedor(?,?,?,?,?,?,?)', [RUT, COMUNA, NOMBRE, TELEFONO, DIRECCION, NUMERO, CORREO]);
-        res.redirect('/proveedor/agregarProveedor');
+        res.redirect('/proveedor/listaProveedor');
 
     } catch (e) {
 
@@ -74,7 +74,7 @@ router.post('/editarProveedor/:id', async (req,res) =>{
         const {id} = req.params;  
         console.log(req.body);  
         await pool.query('call Actualizar_Proveedor(?,?,?,?,?,?,?)',[id, COMUNA, NOMBRE, TELEFONO, DIRECCION, NUMERO, CORREO]);
-        res.redirect('/');
+        res.redirect('/proveedor/listaProveedor');
         
     } catch (e) {
         console.log(e);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-04-2021 a las 05:56:37
+-- Tiempo de generación: 24-04-2021 a las 07:48:47
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -81,7 +81,7 @@ INSERT INTO productos(Nombre,Proveedor,SubRubro,codigoBarra,Descripcion,Gramaje,
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Agregar_Proveedor` (IN `rut` VARCHAR(14), IN `comuna` INT, IN `nombre` VARCHAR(45), IN `telefono` VARCHAR(15), IN `direc` VARCHAR(45), IN `numero` INT, IN `correo` VARCHAR(45))  BEGIN
-INSERT INTO proveedor(Rut,comuna,nombre,telefono,direccion,numero,Correo) VALUES (rut, comuna, nombre, telefono, direc,numero,correo);
+INSERT INTO proveedor(Rut,Fk_Comuna,nombre,telefono,direccion,numero,Correo) VALUES (rut, comuna, nombre, telefono, direc,numero,correo);
 
 END$$
 
@@ -599,7 +599,8 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`idProductos`, `Nombre`, `Proveedor`, `SubRubro`, `CodigoBarra`, `Descripcion`, `Gramaje`, `Medida`, `PrecioUnitario`, `Stock`, `Estado`, `Imagen`) VALUES
-(101, 'Escoba', 123, 64, '1234567891013', 'Sirve para volar a lo Harry Potter', 1, 'un', 30000, 20, 1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:AN');
+(101, 'Escoba', 123, 64, '1234567891013', 'Sirve para volar a lo Harry Potter', 1, 'un', 30000, 20, 1, 'https://i.pinimg.com/originals/50/cb/db/50cbdbf6776e0efe872b88dfb677c99a.png'),
+(103, 'Pala', 123, 64, '12312312323', 'Pala para la escoba', 1, 'un', 2000, 20, 1, 'https://media.easy.com.ar/is/image/EasyArg/1181848');
 
 -- --------------------------------------------------------
 
@@ -625,7 +626,8 @@ CREATE TABLE `proveedor` (
 
 INSERT INTO `proveedor` (`idProveedor`, `Rut`, `Fk_Comuna`, `nombre`, `telefono`, `direccion`, `numero`, `Correo`, `Estado`) VALUES
 (123, '454645456', 50, 'Los proveedores', '454646456', 'Los Montes', 14, 'losproveedores@gmail.com', 1),
-(124, '323132131', 295, 'dsadsa', '3213', 'dasds', 321, 'd@aa.com', 0);
+(124, '323132131', 295, 'dsadsa', '3213', 'dasds', 321, 'd@aa.com', 0),
+(125, '15332803-k', 1, 'S.A AZBA', '454566577', 'Las empresas', 32, 'empresas@gmail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -1193,13 +1195,13 @@ ALTER TABLE `direccion`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `idProductos` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `idProductos` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `idProveedor` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `idProveedor` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT de la tabla `rubro`

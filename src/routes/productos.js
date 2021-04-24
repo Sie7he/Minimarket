@@ -29,7 +29,7 @@ router.post('/agregarProductos', async (req,res) => {
     try {
      const {Prov,SUBRUBRO,codigo,descr,gramo,med,precio,stock,NOMBREPRODUCTO,IMAGEN} = req.body;
      await pool.query('call Agregar_producto(?,?,?,?,?,?,?,?,?,?)',[Prov,SUBRUBRO,codigo,descr,gramo,med,precio,stock,NOMBREPRODUCTO,IMAGEN]);
-     res.redirect('/productos');
+     res.redirect('/productos/listaProdutos');
         
     } catch (e) {
  

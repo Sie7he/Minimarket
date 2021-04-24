@@ -272,7 +272,7 @@ $("#Rubro").change(function () {
         $("#Subrubro").empty();
         for (let i = 0; i < len; i++) {
           let value1 = data[i]['categoria'];
-          let value2 = data[i]['idRubro'];
+          let value2 = data[i]['idSubrubro'];
           console.log(value1+ " " + value2)
           $("#Subrubro").append("<option value='" + value2 + "' >" + value1 + "</option>");
 
