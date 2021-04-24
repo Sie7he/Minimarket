@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-04-2021 a las 20:36:25
+-- Tiempo de generación: 24-04-2021 a las 05:56:37
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.11
 
@@ -51,10 +51,17 @@ UPDATE direccion
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_Productos` (IN `id` INT, IN `nom` VARCHAR(45), IN `cat` VARCHAR(45), IN `cod` VARCHAR(45), IN `descu` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT)  BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_Productos` (IN `id` INT, IN `nom` VARCHAR(45), IN `cat` VARCHAR(45), IN `cod` VARCHAR(45), IN `descu` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT, IN `nomp` VARCHAR(45))  BEGIN 
 UPDATE productos
-SET Proveedor= nom,SubRubro= cat,codigoBarra= cod,Descripcion= descu,Gramage= gramo,medida= med,PrecioUnitario= precio, Stock=stock
+SET Nombre= nomp,Proveedor= nom,SubRubro= cat,codigoBarra= cod,Descripcion= descu,Gramaje= gramo,medida= med,PrecioUnitario= precio, Stock=stock
 WHERE idProductos = id;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Actualizar_Proveedor` (IN `id` INT, IN `com` INT, IN `nom` VARCHAR(45), IN `tel` VARCHAR(15), IN `dire` VARCHAR(45), IN `num` INT, IN `Corr` VARCHAR(45))  BEGIN 
+UPDATE proveedor
+SET Fk_comuna= com,nombre = nom ,telefono= tel,direccion = dire,numero= num,correo= Corr
+WHERE idProveedor = id;
 
 END$$
 
@@ -68,8 +75,8 @@ INSERT INTO direccion (Rut_Cliente, Calle, Numero, Id_Comuna) values (rut, calle
 END IF ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Agregar_producto` (IN `prov` INT, IN `sub` INT, IN `codigo` VARCHAR(45), IN `descr` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT)  BEGIN
-INSERT INTO productos(Proveedor,SubRubro,codigoBarra,Descripcion,Gramage,Medida,PrecioUnitario,Stock) VALUES (prov, sub, codigo, descr, gramo,med,precio,stock);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Agregar_producto` (IN `prov` INT, IN `sub` INT, IN `codigo` VARCHAR(45), IN `descr` VARCHAR(45), IN `gramo` INT, IN `med` VARCHAR(45), IN `precio` INT, IN `stock` INT, IN `nomb` VARCHAR(45), IN `img` VARCHAR(50))  BEGIN
+INSERT INTO productos(Nombre,Proveedor,SubRubro,codigoBarra,Descripcion,Gramaje,Medida,PrecioUnitario,Stock,Imagen) VALUES (nomb,prov, sub, codigo, descr, gramo,med,precio,stock,img);
 
 END$$
 
@@ -88,10 +95,24 @@ UPDATE registro_cliente
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_Productos` (IN `id` INT)  BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_Productos` (IN `id` INT)  BEGIN
+
 UPDATE productos
-SET estado= 0
-WHERE idProductos = id;
+
+ SET estado = 0
+ 
+ WHERE idProductos = id;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminar_Proveedor` (IN `id` INT)  BEGIN
+
+
+UPDATE proveedor
+
+ SET ESTADO = 0
+ 
+ WHERE idProveedor = id;
 
 END$$
 
@@ -550,8 +571,7 @@ INSERT INTO `direccion` (`Id_Direccion`, `Id_Comuna`, `Calle`, `Numero`, `Rut_Cl
 (27, 335, 'Mapaches', '45', '24320491-7'),
 (28, 325, 'Av. Plata', '45', '11027437-8'),
 (29, 333, 'Puerto', '56', '16779152-2'),
-(30, 173, 'El Caule', '104', '9473603-K'),
-(31, 335, 'ad', '45', '76330318-7');
+(30, 173, 'El Caule', '104', '9473603-K');
 
 -- --------------------------------------------------------
 
@@ -561,16 +581,25 @@ INSERT INTO `direccion` (`Id_Direccion`, `Id_Comuna`, `Calle`, `Numero`, `Rut_Cl
 
 CREATE TABLE `productos` (
   `idProductos` int(10) UNSIGNED NOT NULL,
+  `Nombre` varchar(45) NOT NULL,
   `Proveedor` int(10) UNSIGNED NOT NULL,
   `SubRubro` int(10) UNSIGNED NOT NULL,
-  `codigoBarra` varchar(45) NOT NULL,
+  `CodigoBarra` varchar(45) NOT NULL,
   `Descripcion` varchar(45) NOT NULL,
-  `Gramage` int(10) UNSIGNED NOT NULL,
-  `medida` varchar(45) NOT NULL,
+  `Gramaje` int(10) UNSIGNED NOT NULL,
+  `Medida` varchar(45) NOT NULL,
   `PrecioUnitario` int(10) UNSIGNED NOT NULL,
   `Stock` int(10) UNSIGNED NOT NULL,
-  `estado` tinyint(4) NOT NULL DEFAULT 1
+  `Estado` tinyint(4) NOT NULL DEFAULT 1,
+  `Imagen` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`idProductos`, `Nombre`, `Proveedor`, `SubRubro`, `CodigoBarra`, `Descripcion`, `Gramaje`, `Medida`, `PrecioUnitario`, `Stock`, `Estado`, `Imagen`) VALUES
+(101, 'Escoba', 123, 64, '1234567891013', 'Sirve para volar a lo Harry Potter', 1, 'un', 30000, 20, 1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:AN');
 
 -- --------------------------------------------------------
 
@@ -581,20 +610,22 @@ CREATE TABLE `productos` (
 CREATE TABLE `proveedor` (
   `idProveedor` int(10) UNSIGNED NOT NULL,
   `Rut` varchar(14) NOT NULL,
-  `comuna` int(11) NOT NULL,
+  `Fk_Comuna` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `telefono` varchar(15) NOT NULL,
   `direccion` varchar(45) NOT NULL,
   `numero` int(10) UNSIGNED NOT NULL,
-  `Correo` varchar(45) NOT NULL
+  `Correo` varchar(45) NOT NULL,
+  `Estado` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `proveedor`
 --
 
-INSERT INTO `proveedor` (`idProveedor`, `Rut`, `comuna`, `nombre`, `telefono`, `direccion`, `numero`, `Correo`) VALUES
-(123, '454645456', 1, 'Los proveedores', '454646456', 'Por ahi', 14, 'losproveedores@gmail.com');
+INSERT INTO `proveedor` (`idProveedor`, `Rut`, `Fk_Comuna`, `nombre`, `telefono`, `direccion`, `numero`, `Correo`, `Estado`) VALUES
+(123, '454645456', 50, 'Los proveedores', '454646456', 'Los Montes', 14, 'losproveedores@gmail.com', 1),
+(124, '323132131', 295, 'dsadsa', '3213', 'dasds', 321, 'd@aa.com', 0);
 
 -- --------------------------------------------------------
 
@@ -662,7 +693,6 @@ INSERT INTO `registro_cliente` (`Rut`, `Id_Tipo_Cliente`, `Nombre`, `Apellido_Pa
 ('23633584-4', 1, 'Daniela', 'Carrasco', 'Diaz', '454878451', 'dani@gmail.com', 1, 2),
 ('24320491-7', 1, 'Sofia', 'Pavez', 'Araya', '7745457412', 'sofi@gmail.com', 1, 2),
 ('24502150-K', 1, 'Miguel', 'Cardenas', 'Cardenales', '7845457812', 'migo@gmail.com', 1, 1),
-('76330318-7', 2, 'A', 'b', 'c', '32131', 'a@ejemplo.com', 0, 3),
 ('9473603-K', 1, 'Ian', 'Albornoz', 'Jara', '4546545478', 'ianjos@gmail.com', 1, 1);
 
 -- --------------------------------------------------------
@@ -774,7 +804,7 @@ INSERT INTO `sexo` (`Id_Sexo`, `Sex`) VALUES
 --
 
 CREATE TABLE `subrubro` (
-  `idRubro` int(10) UNSIGNED NOT NULL,
+  `idSubrubro` int(10) UNSIGNED NOT NULL,
   `Rubro` int(10) UNSIGNED NOT NULL,
   `categoria` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -783,7 +813,7 @@ CREATE TABLE `subrubro` (
 -- Volcado de datos para la tabla `subrubro`
 --
 
-INSERT INTO `subrubro` (`idRubro`, `Rubro`, `categoria`) VALUES
+INSERT INTO `subrubro` (`idSubrubro`, `Rubro`, `categoria`) VALUES
 (1, 1, 'FIDEOS'),
 (2, 1, 'ARROZ'),
 (3, 1, 'ACEITE'),
@@ -953,20 +983,53 @@ INSERT INTO `tipo_cliente` (`Id_Tipo_Cliente`, `Tipo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura Stand-in para la vista `v_productos`
+-- Estructura Stand-in para la vista `vista_productos`
 -- (Véase abajo para la vista actual)
 --
-CREATE TABLE `v_productos` (
+CREATE TABLE `vista_productos` (
 `idProductos` int(10) unsigned
-,`nombre` varchar(45)
-,`categoria` varchar(45)
-,`codigoBarra` varchar(45)
+,`Nombre` varchar(45)
+,`Proveedor` int(10) unsigned
+,`SubRubro` int(10) unsigned
+,`CodigoBarra` varchar(45)
 ,`Descripcion` varchar(45)
-,`Gramage` int(10) unsigned
-,`medida` varchar(45)
+,`Gramaje` int(10) unsigned
+,`Medida` varchar(45)
 ,`PrecioUnitario` int(10) unsigned
 ,`Stock` int(10) unsigned
-,`estado` tinyint(4)
+,`Estado` tinyint(4)
+,`Imagen` varchar(100)
+,`idProveedor` int(10) unsigned
+,`pNombre` varchar(45)
+,`rut` varchar(14)
+,`idSubrubro` int(10) unsigned
+,`categoria` varchar(45)
+,`idRubro` int(10) unsigned
+,`CategoriaRubro` varchar(45)
+,`idSeccion` int(10) unsigned
+,`seccion` varchar(45)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `v_proveedor`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `v_proveedor` (
+`idProveedor` int(10) unsigned
+,`Rut` varchar(14)
+,`Fk_Comuna` int(11)
+,`nombre` varchar(45)
+,`telefono` varchar(15)
+,`direccion` varchar(45)
+,`numero` int(10) unsigned
+,`Correo` varchar(45)
+,`Estado` tinyint(1)
+,`Id_Comuna` int(10)
+,`Comuna` varchar(45)
+,`Id_Region` int(11)
+,`Region` varchar(45)
 );
 
 -- --------------------------------------------------------
@@ -992,11 +1055,20 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Estructura para la vista `v_productos`
+-- Estructura para la vista `vista_productos`
 --
-DROP TABLE IF EXISTS `v_productos`;
+DROP TABLE IF EXISTS `vista_productos`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_productos`  AS  select `pr`.`idProductos` AS `idProductos`,`p`.`nombre` AS `nombre`,`s`.`categoria` AS `categoria`,`pr`.`codigoBarra` AS `codigoBarra`,`pr`.`Descripcion` AS `Descripcion`,`pr`.`Gramage` AS `Gramage`,`pr`.`medida` AS `medida`,`pr`.`PrecioUnitario` AS `PrecioUnitario`,`pr`.`Stock` AS `Stock`,`pr`.`estado` AS `estado` from ((`productos` `pr` join `proveedor` `p` on(`pr`.`Proveedor` = `p`.`idProveedor`)) join `subrubro` `s` on(`pr`.`SubRubro` = `s`.`idRubro`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_productos`  AS  select `productos`.`idProductos` AS `idProductos`,`productos`.`Nombre` AS `Nombre`,`productos`.`Proveedor` AS `Proveedor`,`productos`.`SubRubro` AS `SubRubro`,`productos`.`CodigoBarra` AS `CodigoBarra`,`productos`.`Descripcion` AS `Descripcion`,`productos`.`Gramaje` AS `Gramaje`,`productos`.`Medida` AS `Medida`,`productos`.`PrecioUnitario` AS `PrecioUnitario`,`productos`.`Stock` AS `Stock`,`productos`.`Estado` AS `Estado`,`productos`.`Imagen` AS `Imagen`,`proveedor`.`idProveedor` AS `idProveedor`,`proveedor`.`nombre` AS `pNombre`,`proveedor`.`Rut` AS `rut`,`subrubro`.`idSubrubro` AS `idSubrubro`,`subrubro`.`categoria` AS `categoria`,`rubro`.`idRubro` AS `idRubro`,`rubro`.`CategoriaRubro` AS `CategoriaRubro`,`seccion`.`idSeccion` AS `idSeccion`,`seccion`.`nombre` AS `seccion` from ((((`productos` join `proveedor` on(`productos`.`Proveedor` = `proveedor`.`idProveedor`)) join `subrubro` on(`productos`.`SubRubro` = `subrubro`.`idSubrubro`)) join `rubro` on(`subrubro`.`Rubro` = `rubro`.`idRubro`)) join `seccion` on(`rubro`.`Seccion` = `seccion`.`idSeccion`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `v_proveedor`
+--
+DROP TABLE IF EXISTS `v_proveedor`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_proveedor`  AS  select `proveedor`.`idProveedor` AS `idProveedor`,`proveedor`.`Rut` AS `Rut`,`proveedor`.`Fk_Comuna` AS `Fk_Comuna`,`proveedor`.`nombre` AS `nombre`,`proveedor`.`telefono` AS `telefono`,`proveedor`.`direccion` AS `direccion`,`proveedor`.`numero` AS `numero`,`proveedor`.`Correo` AS `Correo`,`proveedor`.`Estado` AS `Estado`,`comunas`.`Id_Comuna` AS `Id_Comuna`,`comunas`.`Nombre` AS `Comuna`,`region`.`Id_Region` AS `Id_Region`,`region`.`Nombre` AS `Region` from ((`proveedor` join `comunas` on(`proveedor`.`Fk_Comuna` = `comunas`.`Id_Comuna`)) join `region` on(`comunas`.`Id_Region` = `region`.`Id_Region`)) ;
 
 -- --------------------------------------------------------
 
@@ -1030,7 +1102,7 @@ ALTER TABLE `descuentos`
 ALTER TABLE `direccion`
   ADD PRIMARY KEY (`Id_Direccion`),
   ADD KEY `Id_Comuna` (`Id_Comuna`),
-  ADD KEY `Rut_Cliente` (`Rut_Cliente`);
+  ADD KEY `direccion_ibfk_2` (`Rut_Cliente`);
 
 --
 -- Indices de la tabla `productos`
@@ -1046,7 +1118,7 @@ ALTER TABLE `productos`
 ALTER TABLE `proveedor`
   ADD PRIMARY KEY (`idProveedor`),
   ADD UNIQUE KEY `Rut` (`Rut`),
-  ADD KEY `comuna` (`comuna`);
+  ADD KEY `comuna` (`Fk_Comuna`);
 
 --
 -- Indices de la tabla `region`
@@ -1086,7 +1158,7 @@ ALTER TABLE `sexo`
 -- Indices de la tabla `subrubro`
 --
 ALTER TABLE `subrubro`
-  ADD PRIMARY KEY (`idRubro`),
+  ADD PRIMARY KEY (`idSubrubro`),
   ADD KEY `Rubro` (`Rubro`);
 
 --
@@ -1115,19 +1187,19 @@ ALTER TABLE `descuentos`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Id_Direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `idProductos` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idProductos` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `idProveedor` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+  MODIFY `idProveedor` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT de la tabla `rubro`
@@ -1145,7 +1217,7 @@ ALTER TABLE `seccion`
 -- AUTO_INCREMENT de la tabla `subrubro`
 --
 ALTER TABLE `subrubro`
-  MODIFY `idRubro` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
+  MODIFY `idSubrubro` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- Restricciones para tablas volcadas
@@ -1162,20 +1234,20 @@ ALTER TABLE `comunas`
 --
 ALTER TABLE `direccion`
   ADD CONSTRAINT `direccion_ibfk_1` FOREIGN KEY (`Id_Comuna`) REFERENCES `comunas` (`Id_Comuna`),
-  ADD CONSTRAINT `direccion_ibfk_2` FOREIGN KEY (`Rut_Cliente`) REFERENCES `registro_cliente` (`Rut`);
+  ADD CONSTRAINT `direccion_ibfk_2` FOREIGN KEY (`Rut_Cliente`) REFERENCES `registro_cliente` (`Rut`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `productos`
 --
 ALTER TABLE `productos`
   ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`Proveedor`) REFERENCES `proveedor` (`idProveedor`),
-  ADD CONSTRAINT `productos_ibfk_2` FOREIGN KEY (`SubRubro`) REFERENCES `subrubro` (`idRubro`);
+  ADD CONSTRAINT `productos_ibfk_2` FOREIGN KEY (`SubRubro`) REFERENCES `subrubro` (`idSubrubro`);
 
 --
 -- Filtros para la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  ADD CONSTRAINT `proveedor_ibfk_1` FOREIGN KEY (`comuna`) REFERENCES `comunas` (`Id_Comuna`);
+  ADD CONSTRAINT `proveedor_ibfk_1` FOREIGN KEY (`Fk_Comuna`) REFERENCES `comunas` (`Id_Comuna`);
 
 --
 -- Filtros para la tabla `registro_cliente`

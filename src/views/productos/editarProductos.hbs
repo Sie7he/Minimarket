@@ -7,47 +7,88 @@
                     <form method="POST" autocomplete="off"  >
                      
                         <div class="mb-3">
+                            <label for="id">Codigo</label>
                             <input type="text" class="form-control" id="id" name="id" disabled value="{{pr.idProductos}}"
                                 aria-autocomplete="none">
                         </div>
                         <div class="mb-3">
+                            <label for="Nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="Nombre"  value="{{pr.Nombre}}"
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="Proveedor">Proveedor</label>
                             <select class="form-control" id="Proveedor" name="Proveedor">
-                             <option value="{{pr}}">seleccione Proveedor</option>
+                             <option value="{{pr.Proveedor}}">{{pr.pNombre}}</option>
                              {{#each Proveedor}}
-                                <option value={{idProveedor}}>{{nombre}}</option>
+                                <option value="{{idProveedor}}">{{nombre}}</option>
+                             {{/each}}
+
+                            </select>
+                        </div>
+                          <label for="Seccion">Seccion</label>
+                          <div class="mb-3">
+                            <select class="form-control" id="Seccion" name="Seccion" value="{{pr.SubRubro}}">
+                             <option value="{{pr.idSeccion}}">{{pr.seccion}}</option>
+                             {{#each Seccion}}
+                                <option value="{{idSeccion}}">{{nombre}}</option>
+                             {{/each}}
+
+                            </select>
+                        </div>
+                          <div class="mb-3">
+                            <label for="Rubro">Rubro</label>
+                            <select class="form-control" id="Rubro" name="Rubro"value="{{pr.SubRubro}}">
+                             <option value="{{pr.idRubro}}">{{pr.CategoriaRubro}}</option>
+                             {{#each Rubro}}
+                                <option value="{{idRubro}}">{{CategoriaRubro}}</option>
                              {{/each}}
 
                             </select>
                         </div>
                          <div class="mb-3">
-                            <select class="form-control" id="SubRubro" name="SubRubro"value="{{pr.SubRubro}}">
-                             <option value="0">seleccione categoria</option>
+                             <label for="Subrubro">Sububro</label>
+                            <select class="form-control" id="Subrubro" name="Subrubro"value="{{pr.SubRubro}}">
+                             <option value="{{pr.SubRubro}}">{{pr.categoria}}</option>
                              {{#each SubRubro}}
-                                <option value={{idRubro}}>{{categoria}}</option>
+                                <option value="{{idSubrubro}}">{{categoria}}</option>
                              {{/each}}
 
                             </select>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="Codigo" placeholder="Apellido Materno" value="{{pr.codigoBarra}}">
+                            <label for="Codigo">Codigo de Barra</label>
+                            <input type="text" class="form-control" name="Codigo" placeholder="Codigo de Barra" value="{{pr.CodigoBarra}}">
                         </div>
                         
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="Descripcion" placeholder="Teléfono ej: 9541234547" value="{{pr.Descripcion}}">
+                            <label for="Descripcion">Descripcion</label>
+                            <input type="text" class="form-control" name="Descripcion" placeholder="Descripción" value="{{pr.Descripcion}}">
                         </div>
                         <div class="mb-3">
-                            <input  class="form-control" name="Gramage" placeholder="Correo@ejemplo.com" value="{{pr.Gramage}}">
+                            <label for="Gramage">Gramaje</label>
+                            <input  class="form-control" name="Gramage" placeholder="Gramaje" value="{{pr.Gramaje}}">
                         </div>
                          
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="medida" placeholder="Calle" value="{{pr.medida}}">
-                        </div>
+                            <label for="medida">Medida</label>
+                            <select class="form-control" id="medida" name="medida">
+                                <option value="{{pr.Medida}}">{{pr.Medida}}</option>
+                                <option value="gr">gr</option>
+                                <option value="kg">kg</option>
+                                <option value="ml">ml</option>
+                                <option value="l">l</option>
+                                <option value="un">un</option>
+
+                            </select>
                         
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="Precio" placeholder="Número ej: 123" value="{{pr.PrecioUnitario}}">
+                            <label for="Precio">Precio</label>
+                            <input type="text" class="form-control" name="Precio" placeholder="Precio" value="{{pr.PrecioUnitario}}">
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="Stock" placeholder="Número ej: 123" value="{{pr.Stock}}">
+                            <label for="Stock">Stock</label>
+                            <input type="text" class="form-control" name="Stock" placeholder="Stock" value="{{pr.Stock}}">
                         </div>
                       
                         <div class="d-grid gap-2">

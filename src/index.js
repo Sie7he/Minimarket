@@ -46,6 +46,8 @@ next();
 app.use(require('./routes'));
 app.use('/clientes',require('./routes/clientes'));
 app.use('/productos',require('./routes/productos'));
+app.use('/proveedor',require('./routes/proveedor'));
+
 
 
 

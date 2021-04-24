@@ -4,75 +4,87 @@
         <div class="col-md-4 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" autocomplete="off" onsubmit="return validarFormulario()" >
+                    <form method="POST" autocomplete="off" onsubmit="return validarFormulario()">
+
+                        
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="NOMBREPRODUCTO" name="NOMBREPRODUCTO"
+                                placeholder="Producto" required>
+                            <div id="paterno_error" style="font-size:14px; color:#FF0000;"></div>
+                        </div>
+
                         <div class="mb-3">
                             <select class="form-control" id="Proveedor" name="Prov">
-                             <option value="0">Seleccione Proveedor</option>
-                             {{#each Proveedor}}
+                                <option value="0">Seleccione Proveedor</option>
+                                {{#each Proveedor}}
                                 <option value={{idProveedor}}>{{nombre}}</option>
-                             {{/each}}
+                                {{/each}}
 
                             </select>
                         </div>
 
 
-                          <div class="mb-3">
-                            <select class="form-control" id="SubRubro2" name="Sub">
-                             <option value="0">Seleccione Seccion</option>
-                             {{#each SubRubro}}
-                                <option value={{idRubro}}>{{categoria}}</option>
-                             {{/each}}
-
-                            </select>
-                        </div>
-                           <div class="mb-3">
-                            <select class="form-control" id="SubRubroa" name="Sub">
-                             <option value="0">Seleccione Rubro</option>
-                             {{#each SubRubro}}
-                                <option value={{idRubro}}>{{categoria}}</option>
-                             {{/each}}
-
-                            </select>
-                        </div>
-                         <div class="mb-3">
-                            <select class="form-control" id="SubRubro" name="Sub">
-                             <option value="0">seleccione Sub-Rubro</option>
-                             {{#each SubRubro}}
-                                <option value={{idRubro}}>{{categoria}}</option>
-                             {{/each}}
+                        <div class="mb-3">
+                            <select class="form-control" id="Seccion" name="SECCION">
+                                <option value="0">Seleccione Seccion</option>
+                                {{#each Seccion}}
+                                <option value={{idSeccion}}>{{nombre}}</option>
+                                {{/each}}
 
                             </select>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="CodigoBarra" name="codigo" placeholder="Codigo de barra"  required>
+                            <select class="form-control" id="Rubro" name="RUBRO">
+                                <option value="0">Seleccione Rubro</option>
+
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-control" id="Subrubro" name="SUBRUBRO">
+                                <option value="0">Seleccione Subrubro</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="CodigoBarra" name="codigo"
+                                placeholder="Codigo de barra" required>
                             <div id="paterno_error" style="font-size:14px; color:#FF0000;"></div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="Descripcion" name="descr" placeholder="Descripcion" required>
+                            <input type="text" class="form-control" id="Descripcion" name="descr"
+                                placeholder="Descripcion" required>
                             <div id="materno_error" style="font-size:14px; color:#FF0000;"></div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="Gramaje" name="gramo" placeholder="Gramaje" required>
+                            <input type="text" class="form-control" id="Gramaje" name="gramo" placeholder="Gramaje"
+                                required>
                             <div id="materno_error" style="font-size:14px; color:#FF0000;"></div>
                         </div>
-                          <div class="mb-3">
-                            <select class="form-control" id="medida" name="Sub">
-                            <option value="0" selected>Seleccione una medida</option>
-                             <option value="gr">gr</option>
-                              <option value="kg">kg</option>
-                               <option value="ml">ml</option>
+                        <div class="mb-3">
+                            <select class="form-control" id="medida" name="med">
+                                <option value="0" selected>Seleccione una medida</option>
+                                <option value="gr">gr</option>
+                                <option value="kg">kg</option>
+                                <option value="ml">ml</option>
                                 <option value="l">l</option>
-                                 <option value="un">un</option>
-                            
+                                <option value="un">un</option>
+
                             </select>
-                          </div>
+                        </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="PrecioUnitario" name="precio" placeholder="Precio Unitario" required>
+                            <input type="text" class="form-control" id="PrecioUnitario" name="precio"
+                                placeholder="Precio Unitario" required>
                             <div id="materno_error" style="font-size:14px; color:#FF0000;"></div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="Stock" name="stock" placeholder="Stock" required>
+                            <input type="text" class="form-control" id="Stock" name="stock" placeholder="Stock"
+                                required>
                             <div id="materno_error" style="font-size:14px; color:#FF0000;"></div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="url" class="form-control" id="IMAGEN" name="IMAGEN"
+                                placeholder="IMAGEN" required>
+                            <div id="imagen_error" style="font-size:14px; color:#FF0000;"></div>
                         </div>
 
                         <div class="d-grid 2-gap">

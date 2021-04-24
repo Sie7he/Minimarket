@@ -13,10 +13,8 @@ router.get('/regiones/:id', async (req,res) =>{
 
         try {
             const {id} = req.params;
-            console.log(id);
             const comunas =  await pool.query('Select * from comunas where Id_Region = ?',id);
             res.json(comunas);
-            console.log(comunas);
         } catch (error) {
             console.log(error);
         }
